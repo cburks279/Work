@@ -25,7 +25,7 @@
   .ccity{font-size:12px;color:#667;margin:2px 0 6px}
   .cmeta{display:flex;gap:14px;font-size:12px;color:#445}
   .czone{font-size:11px;color:#889;margin-top:4px;font-style:italic}
-  #map{flex:1;height:100vh}
+  #map{flex:1;height:100vh;background:#222}
   .leaflet-popup-content{font-size:13px;line-height:1.5}
   .pop-t{font-weight:700;font-size:14px;color:var(--accent);margin-bottom:4px}
   .pop-r{display:flex;justify-content:space-between;gap:16px;border-top:1px solid #eee;padding:3px 0}
@@ -36,11 +36,11 @@
 <div class="wrap">
   <div class="side">
     <div class="head"><h1>CCRE Investments &mdash; Vacant Properties</h1>
-      <div class="sub">8 available industrial properties &middot; Portfolio as of 04/20/2026</div></div>
+      <div class="sub">9 available industrial properties &middot; Portfolio as of 04/20/2026</div></div>
     <div class="stats">
-      <div class="stat"><b>8</b><span>Properties</span></div>
-      <div class="stat"><b>172K</b><span>Total SF</span></div>
-      <div class="stat"><b>29.57</b><span>Total Acres</span></div>
+      <div class="stat"><b>9</b><span>Properties</span></div>
+      <div class="stat"><b>191K</b><span>Total SF</span></div>
+      <div class="stat"><b>33.91</b><span>Total Acres</span></div>
     </div>
     <div class="list">
     <div class="card" data-n="1" onclick="focusProp(1)">
@@ -109,6 +109,15 @@
     <div class="card" data-n="8" onclick="focusProp(8)">
       <div class="cn">8</div>
       <div class="cbody">
+        <div class="caddr">2500 Paper Mill Rd</div>
+        <div class="ccity">Mobile, AL</div>
+        <div class="cmeta"><span>🏭 19,786 SF</span><span>📐 4.34 ac</span></div>
+        <div class="czone">I-2 Heavy Industrial</div>
+      </div>
+    </div>
+    <div class="card" data-n="9" onclick="focusProp(9)">
+      <div class="cn">9</div>
+      <div class="cbody">
         <div class="caddr">450 Butler Dr</div>
         <div class="ccity">Murfreesboro, TN</div>
         <div class="cmeta"><span>🏭 53,750 SF</span><span>📐 5.43 ac</span></div>
@@ -119,12 +128,18 @@
   <div id="map"></div>
 </div>
 <script>
-const props=[{"n": 1, "addr": "140 Veterans Memorial Hwy", "city": "Mableton", "state": "GA", "sf": 19350, "acres": 2.5, "zoning": "LI - Light Industrial", "lat": 33.81275763, "lon": -84.55783477, "earth": "https://earth.google.com/web/search/140+Veterans+Memorial+Hwy+SW,+Mableton,+GA/@33.81275763,-84.55783477,312.29750201a,1223.68212533d,35y,-0h,0t,0r/data=CiwiJgokCZIU6r1bAEFAEZBgpXwr_0BAGYAWfJzNIFXAISZcTopLIlXAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 2, "addr": "2646 Metro Blvd", "city": "Maryland Heights", "state": "MO", "sf": 22734, "acres": 4.84, "zoning": "M1 - Light Industrial", "lat": 38.71769778, "lon": -90.43906205, "earth": "https://earth.google.com/web/search/2646+Metro+Blvd,+Maryland+Heights,+MO/@38.71769778,-90.43906205,155.19436259a,844.75730144d,35y,-0h,0t,0r/data=CiwiJgokCbtQrCaX6EBAEUB0hLN550BAGXqIE8sAI1XAIQ8DJ1ZmJFXAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 3, "addr": "11604 Strang Rd", "city": "LaPorte", "state": "TX", "sf": 16360, "acres": 4.52, "zoning": "No Zoning", "lat": 29.7020751, "lon": -95.0572322, "earth": "https://earth.google.com/web/search/11604+Strang+Rd,+La+Porte,+TX/@29.7020751,-95.0572322,12.15532615a,720.70253844d,35y,0h,0t,0r/data=CiwiJgokCf5yB2FDtD1AEa5JDP8ysz1AGf5ApxtYw1fAIZxi1kb7w1fAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 4, "addr": "395 James Ave", "city": "St. Paul", "state": "MN", "sf": 22000, "acres": 4.09, "zoning": "I3 - Heavy Industrial", "lat": 44.928498, "lon": -93.116336, "earth": "https://earth.google.com/web/search/395+West+James+Avenue,+Saint+Paul,+MN/@44.928498,-93.116336,224.70508148a,574.7779953d,35y,0h,0t,0r/data=CiwiJgokCdTRpexSCEJAEanVMxh7B0JAGXnIrHny9lPAIRAlaFQI-FPAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 5, "addr": "910 Prospect", "city": "Kansas City", "state": "MO", "sf": 0, "acres": 2.4, "zoning": "M1-5 Manufacturing District", "lat": 39.1252789, "lon": -94.54986261, "earth": "https://earth.google.com/web/search/910+N+Prospect+Avenue,+Kansas+City,+MO/@39.1252789,-94.54986261,230.18308005a,1326.60679809d,35y,-0h,0t,0r/data=CiwiJgokCfZkRiBkjUNAEd5RGRy3jENAGfMblLDYolfAIcKWsLbAo1fAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 6, "addr": "218 Springfield Rd", "city": "Baton Rouge", "state": "LA", "sf": 24700, "acres": 4.086, "zoning": "M2 - Heavy Industrial", "lat": 30.57920382, "lon": -91.21541763, "earth": "https://earth.google.com/web/search/218+Springfield+Rd,+Baton+Rouge,+LA/@30.57920382,-91.21541763,27.57345733a,1217.98432972d,35y,0h,0t,0r/data=CiwiJgokCZ-8MAkh5kBAESdJM7Ny5UBAGUjff1egHFXAIV2ntqh6HVXAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 7, "addr": "6980 Market St", "city": "El Paso", "state": "TX", "sf": 12725, "acres": 1.7, "zoning": "M1 - Light Manufacturing", "lat": 31.76784607, "lon": -106.38254429, "earth": "https://earth.google.com/web/search/6980+Market+Avenue,+El+Paso,+TX/@31.76784607,-106.38254429,1165.63763495a,810.73536689d,35y,-0h,0t,0r/data=CiwiJgokCS8paf5do0FAEcraQzmzokFAGWwebpRZOFTAIQbLfkMzOVTAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 8, "addr": "450 Butler Dr", "city": "Murfreesboro", "state": "TN", "sf": 53750, "acres": 5.43, "zoning": "Heavy Industrial", "lat": 35.80316366, "lon": -86.38932792, "earth": "https://earth.google.com/web/search/450+Butler+Drive,+Murfreesboro,+TN/@35.80316366,-86.38932792,194.46627213a,892.36418324d,35y,-0h,0t,0r/data=CiwiJgokCRbbScZdoz1AEUyFr0A0oT1AGRN49Z5_zFfAIfPIePzKzVfAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}];
+const props=[{"n": 1, "addr": "140 Veterans Memorial Hwy", "city": "Mableton", "state": "GA", "sf": 19350, "acres": 2.5, "zoning": "LI - Light Industrial", "lat": 33.81275763, "lon": -84.55783477, "earth": "https://earth.google.com/web/search/140+Veterans+Memorial+Hwy+SW,+Mableton,+GA/@33.81275763,-84.55783477,312.29750201a,1223.68212533d,35y,-0h,0t,0r/data=CiwiJgokCZIU6r1bAEFAEZBgpXwr_0BAGYAWfJzNIFXAISZcTopLIlXAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 2, "addr": "2646 Metro Blvd", "city": "Maryland Heights", "state": "MO", "sf": 22734, "acres": 4.84, "zoning": "M1 - Light Industrial", "lat": 38.71769778, "lon": -90.43906205, "earth": "https://earth.google.com/web/search/2646+Metro+Blvd,+Maryland+Heights,+MO/@38.71769778,-90.43906205,155.19436259a,844.75730144d,35y,-0h,0t,0r/data=CiwiJgokCbtQrCaX6EBAEUB0hLN550BAGXqIE8sAI1XAIQ8DJ1ZmJFXAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 3, "addr": "11604 Strang Rd", "city": "LaPorte", "state": "TX", "sf": 16360, "acres": 4.52, "zoning": "No Zoning", "lat": 29.7020751, "lon": -95.0572322, "earth": "https://earth.google.com/web/search/11604+Strang+Rd,+La+Porte,+TX/@29.7020751,-95.0572322,12.15532615a,720.70253844d,35y,0h,0t,0r/data=CiwiJgokCf5yB2FDtD1AEa5JDP8ysz1AGf5ApxtYw1fAIZxi1kb7w1fAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 4, "addr": "395 James Ave", "city": "St. Paul", "state": "MN", "sf": 22000, "acres": 4.09, "zoning": "I3 - Heavy Industrial", "lat": 44.928498, "lon": -93.116336, "earth": "https://earth.google.com/web/search/395+West+James+Avenue,+Saint+Paul,+MN/@44.928498,-93.116336,224.70508148a,574.7779953d,35y,0h,0t,0r/data=CiwiJgokCdTRpexSCEJAEanVMxh7B0JAGXnIrHny9lPAIRAlaFQI-FPAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 5, "addr": "910 Prospect", "city": "Kansas City", "state": "MO", "sf": 0, "acres": 2.4, "zoning": "M1-5 Manufacturing District", "lat": 39.1252789, "lon": -94.54986261, "earth": "https://earth.google.com/web/search/910+N+Prospect+Avenue,+Kansas+City,+MO/@39.1252789,-94.54986261,230.18308005a,1326.60679809d,35y,-0h,0t,0r/data=CiwiJgokCfZkRiBkjUNAEd5RGRy3jENAGfMblLDYolfAIcKWsLbAo1fAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 6, "addr": "218 Springfield Rd", "city": "Baton Rouge", "state": "LA", "sf": 24700, "acres": 4.086, "zoning": "M2 - Heavy Industrial", "lat": 30.57920382, "lon": -91.21541763, "earth": "https://earth.google.com/web/search/218+Springfield+Rd,+Baton+Rouge,+LA/@30.57920382,-91.21541763,27.57345733a,1217.98432972d,35y,0h,0t,0r/data=CiwiJgokCZ-8MAkh5kBAESdJM7Ny5UBAGUjff1egHFXAIV2ntqh6HVXAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 7, "addr": "6980 Market St", "city": "El Paso", "state": "TX", "sf": 12725, "acres": 1.7, "zoning": "M1 - Light Manufacturing", "lat": 31.76784607, "lon": -106.38254429, "earth": "https://earth.google.com/web/search/6980+Market+Avenue,+El+Paso,+TX/@31.76784607,-106.38254429,1165.63763495a,810.73536689d,35y,-0h,0t,0r/data=CiwiJgokCS8paf5do0FAEcraQzmzokFAGWwebpRZOFTAIQbLfkMzOVTAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 8, "addr": "2500 Paper Mill Rd", "city": "Mobile", "state": "AL", "sf": 19786, "acres": 4.34, "zoning": "I-2 Heavy Industrial", "lat": 30.7388799, "lon": -88.0533082, "earth": "https://earth.google.com/web/search/2500+Paper+Mill+Rd,+Mobile,+AL/@30.7388799,-88.0533082,13.24312505a,712.04570508d,35y,0h,0t,0r/data=CiwiJgokCQrN9c8Axj9AEZ5APjYiwz9AGThIz8yal1rAIefzT2lcmVrAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}, {"n": 9, "addr": "450 Butler Dr", "city": "Murfreesboro", "state": "TN", "sf": 53750, "acres": 5.43, "zoning": "Heavy Industrial", "lat": 35.80316366, "lon": -86.38932792, "earth": "https://earth.google.com/web/search/450+Butler+Drive,+Murfreesboro,+TN/@35.80316366,-86.38932792,194.46627213a,892.36418324d,35y,-0h,0t,0r/data=CiwiJgokCRbbScZdoz1AEUyFr0A0oT1AGRN49Z5_zFfAIfPIePzKzVfAQgIIATIpCicKJQohMWdTMFZXLWRMNTk0RFVHSzBBazR3alZaVXE5NDhMWGpVIAE6AwoBMEICCABKCAjS3LSqBhAB"}];
 const map=L.map('map',{scrollWheelZoom:true}).setView([37.5,-92],4);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map);
+// Satellite imagery (Esri World Imagery) + labels overlay for street/place names
+const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  {maxZoom:19,attribution:'Imagery &copy; Esri, Maxar, Earthstar Geographics'}).addTo(map);
+const labels=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+  {maxZoom:19,opacity:.9}).addTo(map);
+const streets=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {maxZoom:19,attribution:'&copy; OpenStreetMap'});
+L.control.layers({'Satellite':sat,'Street map':streets},{'Place labels':labels},{position:'topright'}).addTo(map);
 const markers={};
-function mk(n){return L.divIcon({className:'',html:`<div style="background:#c0392b;color:#fff;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.4);border:2px solid #fff"><span style="transform:rotate(45deg);font-weight:700;font-size:13px">${n}</span></div>`,iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-30]});}
+function mk(n){return L.divIcon({className:'',html:`<div style="background:#ffcc00;color:#1a2332;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.6);border:2px solid #1a2332"><span style="transform:rotate(45deg);font-weight:700;font-size:13px">${n}</span></div>`,iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-30]});}
 props.forEach(p=>{
   if(p.lat==null)return;
   const sf=p.sf? p.sf.toLocaleString()+' SF':'Land (no building)';
@@ -140,7 +155,7 @@ const grp=L.featureGroup(Object.values(markers));
 map.fitBounds(grp.getBounds().pad(0.15));
 function focusProp(n){
   const p=props.find(x=>x.n===n);if(!p||p.lat==null)return;
-  map.flyTo([p.lat,p.lon],14,{duration:.8});
+  map.flyTo([p.lat,p.lon],17,{duration:.8});
   markers[n].openPopup();
   document.querySelectorAll('.card').forEach(c=>c.classList.toggle('active',+c.dataset.n===n));
 }
