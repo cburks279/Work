@@ -148,7 +148,7 @@ props.forEach(p=>{
    <div class="pop-r"><span>Building</span><b>${sf}</b></div>
    <div class="pop-r"><span>Acreage</span><b>${p.acres} ac</b></div>
    <div class="pop-r"><span>Zoning</span><b>${p.zoning}</b></div>
-   <div style="margin-top:6px"><a href="${p.earth}" target="_blank">View on Google Earth &rarr;</a></div>`);
+   <div style="margin-top:6px"><a href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}" target="_blank">Open in Google Maps &rarr;</a></div>`);
   markers[p.n]=m;
 });
 const grp=L.featureGroup(Object.values(markers));
