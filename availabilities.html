@@ -16,7 +16,13 @@
  .stat{flex:1;text-align:center}.stat b{display:block;font-size:17px;color:var(--accent)}
  .stat span{font-size:10px;color:#667;text-transform:uppercase;letter-spacing:.4px}
  .filter{padding:10px 18px;background:#fff;border-bottom:1px solid #e2e5ea}
- .filter select{width:100%;padding:7px;border:1px solid #cfd4da;border-radius:6px;font-size:13px}
+ .filter{position:relative}
+ .filter-btn{width:100%;padding:8px;border:1px solid #cfd4da;border-radius:6px;background:#fff;font-size:13px;text-align:left;cursor:pointer}
+ .filter-panel{position:absolute;left:18px;right:18px;top:46px;background:#fff;border:1px solid #cfd4da;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.18);max-height:320px;overflow-y:auto;z-index:1200;padding:6px}
+ .filter-actions{display:flex;gap:16px;padding:4px 6px 8px;border-bottom:1px solid #eee;margin-bottom:4px}
+ .filter-actions a{font-size:11.5px;color:#1d4ed8;cursor:pointer;font-weight:600}
+ .opt{display:flex;align-items:center;gap:8px;padding:5px 6px;font-size:12.5px;border-radius:5px;cursor:pointer}
+ .opt:hover{background:#f1f3f5}.opt span{flex:1}.opt em{color:#99a;font-style:normal;font-size:11px}
  .list{overflow-y:auto;flex:1;padding:8px}
  .card{padding:11px 12px;border-radius:8px;cursor:pointer;border:1px solid transparent}
  .card:hover,.card.active{background:#fff;border-color:#d0d4da;box-shadow:0 2px 8px rgba(0,0,0,.06)}
@@ -49,7 +55,13 @@
    <div class="stat"><b>27</b><span>Submarkets</span></div>
    <div class="stat"><b>467</b><span>Usable Acres</span></div>
   </div>
-  <div class="filter"><select id="subfilter"><option value="">All submarkets</option></select></div>
+  <div class="filter">
+   <button id="filterBtn" class="filter-btn">All submarkets &#9662;</button>
+   <div id="filterPanel" class="filter-panel" hidden>
+    <div class="filter-actions"><a id="selAll">Select all</a><a id="selNone">Clear</a></div>
+    <div id="filterOpts"></div>
+   </div>
+  </div>
   <div class="list" id="list"></div>
  </div>
  <div id="map"></div>
@@ -79,9 +91,9 @@ props.forEach(p=>{
 });
 
 const list=document.getElementById('list');
-function render(filter){
+function render(){
   list.innerHTML='';
-  props.filter(p=>!filter||p.sub===filter).forEach(p=>{
+  props.filter(p=>selSet.size===0||selSet.has(p.sub)).forEach(p=>{
     const c=document.createElement('div');
     c.className='card'; c.dataset.n=p.n; c.onclick=()=>focus(p.n);
     c.innerHTML=`<div class="csub">${p.sub}</div><div class="caddr">${p.addr}${p.approx?'<span class="badge">APPROX</span>':''}</div>
@@ -94,14 +106,34 @@ function render(filter){
 function focus(n){const p=props.find(x=>x.n===n);if(!p)return;map.flyTo([p.lat,p.lon],16,{duration:.7});markers[n].openPopup();
   document.querySelectorAll('.card').forEach(c=>c.classList.toggle('active',+c.dataset.n===n));}
 
-const sel=document.getElementById('subfilter');
-submarkets.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
-sel.onchange=()=>{const f=sel.value;render(f);
+const selSet=new Set();
+const counts={};props.forEach(p=>counts[p.sub]=(counts[p.sub]||0)+1);
+const opts=document.getElementById('filterOpts');
+const fbtn=document.getElementById('filterBtn');
+const fpanel=document.getElementById('filterPanel');
+submarkets.forEach(s=>{
+  const lbl=document.createElement('label');lbl.className='opt';
+  const cb=document.createElement('input');cb.type='checkbox';cb.value=s;
+  const sp=document.createElement('span');sp.textContent=s;
+  const em=document.createElement('em');em.textContent=counts[s];
+  lbl.appendChild(cb);lbl.appendChild(sp);lbl.appendChild(em);opts.appendChild(lbl);
+});
+function apply(){
+  selSet.clear();
+  opts.querySelectorAll('input:checked').forEach(i=>selSet.add(i.value));
+  fbtn.innerHTML=(selSet.size? selSet.size+' submarket'+(selSet.size>1?'s':'')+' selected':'All submarkets')+' &#9662;';
+  render();
   Object.values(markers).forEach(m=>map.removeLayer(m));
-  const grp=[];props.forEach(p=>{if(!f||p.sub===f){markers[p.n].addTo(map);grp.push(markers[p.n]);}});
-  if(grp.length){const g=L.featureGroup(grp);map.fitBounds(g.getBounds().pad(0.2));}
-};
-render('');
+  const grp=[];
+  props.forEach(p=>{if(selSet.size===0||selSet.has(p.sub)){markers[p.n].addTo(map);grp.push(markers[p.n]);}});
+  if(grp.length){map.fitBounds(L.featureGroup(grp).getBounds().pad(grp.length>1?0.08:0.35));}
+}
+opts.addEventListener('change',apply);
+fbtn.onclick=(e)=>{e.stopPropagation();fpanel.hidden=!fpanel.hidden;};
+document.getElementById('selAll').onclick=()=>{opts.querySelectorAll('input').forEach(i=>i.checked=true);apply();};
+document.getElementById('selNone').onclick=()=>{opts.querySelectorAll('input').forEach(i=>i.checked=false);apply();};
+document.addEventListener('click',(e)=>{if(!e.target.closest('.filter'))fpanel.hidden=true;});
+render();
 const all=L.featureGroup(Object.values(markers));map.fitBounds(all.getBounds().pad(0.05));
 </script>
 </body></html>
